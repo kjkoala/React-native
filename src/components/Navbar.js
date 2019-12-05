@@ -14,6 +14,5 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         alignItems: 'center',
         height: 70
-    },
-    text: {}
+    }
 })

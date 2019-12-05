@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import Navbar from './src/components/Navbar'
 import { MainScreen } from './src/screens/MainScreen'
+import { TodoScreen } from './src/screens/TodoScreen'
 export default function App() {
   const [todoId, setTodoId] = useState(null)
-  const [todos, setTodos] = useState([
-    { id: 0, title: 'Дело 1' },
-    { id: 1, title: 'Дело 2' },
-    { id: 2, title: 'Дело 14' },
-    { id: 3, title: 'Дело 12' },
-    { id: 4, title: 'Дело 11' },
-    { id: 5, title: 'Дело 112' },
-    { id: 6, title: 'Дело 1фы' },
-    { id: 7, title: 'Дело 1123' },
-    { id: 8, title: 'Дело 151' },
-  ])
+  const [todos, setTodos] = useState([])
 
   const addTodo = (title) => {
     const newTodo = {
@@ -24,12 +15,47 @@ export default function App() {
     setTodos(prevTodos => [...prevTodos, newTodo])
   }
 
-  const removeTodo = id => {
-    setTodos(prev => prev.filter(todo => todo.id !== id))
+  const openWindow = id => {
+    setTodoId(id)
   }
 
-  let content = <MainScreen todos={todos} removeTodo={removeTodo} addTodo={addTodo} />
+  const removeTodo = id => {
+    Alert.alert(
+      'Удаление эелемента',
+      'Уверены что хотите удалить?',
+      [
+        {
+          text: 'Отмена',
+          style: 'cancel',
+        },
+        {text: 'Удалить', onPress: () => {
+          setTodoId(null);
+          setTodos(prev => prev.filter(todo => todo.id !== id))
+        }},
+      ],
+      {cancelable: false},
+    );
+  }
 
+  const updateTodo = (id, title) => {
+    setTodos(prev => {
+      return prev.map(todo => {
+        if(todo.id === id) {
+          todo.title = title
+        }
+        return todo
+      })
+    })
+  }
+
+  let content;
+
+  if(!todoId) {
+    content = <MainScreen todos={todos} removeTodo={removeTodo} addTodo={addTodo} openWindow={openWindow} />
+  } else {
+    const title = todos.find(todo => todo.id === todoId)
+    content = <TodoScreen closeModal={openWindow} title={title} onRemove={removeTodo} onSave={updateTodo} />
+  }
   
   return (
     <View style={styles.container}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TextInput, Button, Alert } from 'react-native'
+import { View, StyleSheet, TextInput, Button, Alert, Keyboard } from 'react-native'
 
 export default AddTodo = ({ onSubmit }) => {
     const [value, setValue] = useState('')
@@ -7,6 +7,7 @@ export default AddTodo = ({ onSubmit }) => {
         if (!value.trim()) return Alert.alert('Название дела не может быть пустым')
         onSubmit(value)
         setValue('')
+        Keyboard.dismiss()
     }
 
     return (
