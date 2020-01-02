@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, View, Text, Button } from 'react-native'
+import { ScreenContext } from '../context/screen/screenContext'
+import { TodoContext } from '../context/todo/TodoContext'
 
 import AppCard from '../../ui/AppCard'
 import EditModal from '../components/EditModal'
 
-export const TodoScreen = ({ closeModal, title, onRemove, onSave }) => {
+export const TodoScreen = () => {
     const [modal, setModal] = useState(false)
-
+    const { todos, updateTodo, removeTodo } = useContext(TodoContext)
+    const { todoId, changeScreen } = useContext(ScreenContext)
+    const title = todos.find(t => t.id === todoId)
     const saveHandler = value => {
-        onSave(title.id, value)
+        updateTodo(title.id, value)
         setModal(false)
     }
     return (<View>
@@ -25,8 +29,8 @@ export const TodoScreen = ({ closeModal, title, onRemove, onSave }) => {
             />
         </AppCard>
         <View style={styles.button}>
-            <Button title="Назад" onPress={() => closeModal(null)} color="orange" />
-            <Button title="Удалить" onPress={() => onRemove(title.id)} color="red" />
+            <Button title="Назад" onPress={() => changeScreen(null)} color="orange" />
+            <Button title="Удалить" onPress={() => removeTodo(title.id)} color="red" />
         </View>
     </View>)
 }

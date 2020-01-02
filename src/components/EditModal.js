@@ -5,10 +5,14 @@ export default EditModal = ({ visible, closeModal, value, onSave }) => {
     const [title, setTitle] = useState(value)
     const saveHandler = () => {
         if (title.trim().length < 3) {
-            Alert.alert('Слишком короткое название');
+            Alert.alert('Ошибка', 'Слишком короткое название');
             return;
         }
         onSave(title)
+    }
+    const close = () => {
+        setTitle(value);
+        closeModal();
     }
     return (
         <Modal visible={visible} animationType='slide'>
@@ -23,7 +27,7 @@ export default EditModal = ({ visible, closeModal, value, onSave }) => {
                     onChangeText={setTitle}
                 />
                 <View style={styles.buttons}>
-                    <Button title="Отменить" onPress={closeModal} color="orange" />
+                    <Button title="Отменить" onPress={close} color="orange" />
                     <Button title="Сохранить" color="green" onPress={saveHandler} />
                 </View>
             </View>

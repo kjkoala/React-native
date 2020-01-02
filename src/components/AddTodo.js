@@ -4,7 +4,7 @@ import { View, StyleSheet, TextInput, Button, Alert, Keyboard } from 'react-nati
 export default AddTodo = ({ onSubmit }) => {
     const [value, setValue] = useState('')
     const pressHandler = () => {
-        if (!value.trim()) return Alert.alert('Название дела не может быть пустым')
+        if (!value.trim()) return Alert.alert('Ошибка', 'Название дела не может быть пустым')
         onSubmit(value)
         setValue('')
         Keyboard.dismiss()
