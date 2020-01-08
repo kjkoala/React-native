@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useCallback } from 'react'
 import { StyleSheet, View, FlatList, Image } from 'react-native'
 import AddTodo from '../components/AddTodo'
 import Todo from '../components/todo'
@@ -6,12 +6,16 @@ import { TodoContext } from '../context/todo/TodoContext'
 import { ScreenContext } from '../context/screen/screenContext'
 
 export const MainScreen = () => {
-    const { addTodo, removeTodo, todos } = useContext(TodoContext)
+    const { addTodo, removeTodo, todos, fetchTodos, loading, error } = useContext(TodoContext)
     const { changeScreen } = useContext(ScreenContext)
+    const loadTodos = useCallback(async () => await fetchTodos(), [fetchTodos] )
+    useEffect(() => {
+        loadTodos();
+    }, [])
     return (<View style={styles.paddings}>
         <AddTodo onSubmit={addTodo} />
         {todos.length > 0 && <FlatList
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.id}
             data={todos}
             renderItem={({ item }) => <Todo todo={item}
                 onRemove={removeTodo} openWindow={changeScreen} />

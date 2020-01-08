@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import Navbar from './components/Navbar'
 import { MainScreen } from './screens/MainScreen'
 import { TodoScreen } from './screens/TodoScreen'
 import { ScreenContext } from './context/screen/screenContext'
+import { TodoContext } from './context/todo/TodoContext'
 
 export const MainLayout = () => {
-    const {todoId } = useContext(ScreenContext)
-
+    const { todoId } = useContext(ScreenContext)
     let content;
 
     if (!todoId) {
